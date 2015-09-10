@@ -1,7 +1,7 @@
 import os
-import smtplib
 
 from credentials import *
+from emailx import *
 from novaclient.v2 import client as novaclient
 from keystoneclient.v2_0 import client as keystoneclient
 
@@ -19,7 +19,6 @@ def get_users(keystone, nova):
 	    continue
 
     return kwargs
-
 
 def get_projects(keystone):
     kwargs = {}
@@ -56,27 +55,6 @@ def get_servers(keystone, nova):
 
     return kwargs
 
-
-def send_email(users):
-    email = 'your_email@gmail.com'
-    password = raw_input()
-    
-    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    smtp.ehlo()
-    smtp.login(email, password)
-    
-    for user in sorted(users):
-	if not users[user].has_key('servers'):
-	   continue
-
-	servers = users[user]['servers']
-	destination = users[user]['email']
-
-    	messenger = "\r\n".join(["From: %s" % email, "To: %s" % destination, "Subject: Just a message", "", "Why, oh why"])
-   	smtp.sendmail(email, [destination], messenger)  
-   
-    smtp.close()
-
 def main():
     kscreds = get_keystone_credentials()
     keystone = keystoneclient.Client(**kscreds)
@@ -87,4 +65,4 @@ def main():
     send_email(users)
 
 if __name__ == '__main__':
-   main()
+    main()
