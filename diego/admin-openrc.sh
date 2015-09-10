@@ -1,6 +1,0 @@
-#export OS_USER_DOMAIN_NAME="default"
-export OS_USERNAME="admin"
-export OS_PASSWORD="admin"
-export OS_TENANT_NAME="admin"
-#export OS_PROJECT_DOMAIN_NAME="default"
-export OS_AUTH_URL="http://10.4.4.41:5000/v2.0/"

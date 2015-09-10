@@ -32,27 +32,25 @@ def get_projects(keystone):
 
 def get_servers(keystone, nova):
     kwargs = {}
-    import pdb; pdb.set_trace();
-    flavors = nova.flavors.list()
     projects = get_projects(keystone)
     servers = nova.servers.list(search_opts={'all_tenants': 1})
     
     for server in servers:
-	flavor = flavors[int(server.flavor['id']) - 1]
+	flavor = nova.flavors.find(id=server.flavor['id'])
 	if kwargs.has_key(server.user_id):
 	     kwargs[server.user_id].update({server.name: {
 					'id': server.id,
 					'project': projects[server.tenant_id],
-					'cpu': flavor.vcpu 
-					'ram': flavor.ram	
+					'cpu': flavor.vcpus, 
+					'ram': flavor.ram,	
 					'created': server.created,
 					'status': server.status}})
 	else:
 	     kwargs[server.user_id] = {server.name: {
 				       'id': server.id,  
 				       'project': projects[server.tenant_id],
-				       'cpu': flavor.vcpus
-				       'ram': flavor.ram
+				       'cpu': flavor.vcpus,
+				       'ram': flavor.ram,
 				       'created': server.created,
 				       'status': server.status}}
 
@@ -60,43 +58,33 @@ def get_servers(keystone, nova):
 
 
 def send_email(users):
-    email = 'diegoado@gmail.com'
+    email = 'your_email@gmail.com'
     password = raw_input()
     
     smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    smtp.ehlo()
     smtp.login(email, password)
     
     for user in sorted(users):
-	if not user.has_key('servers'):
+	if not users[user].has_key('servers'):
 	   continue
 
-	servers = user['servers']
-	messenger = get_messenger(servers)
-    	smtp.sendmail(email, user['email'], messenger)
-   
-    smtp.quit()
+	servers = users[user]['servers']
+	destination = users[user]['email']
 
+    	messenger = "\r\n".join(["From: %s" % email, "To: %s" % destination, "Subject: Just a message", "", "Why, oh why"])
+   	smtp.sendmail(email, [destination], messenger)  
+   
+    smtp.close()
 
 def main():
-    auth_url = os.environ.get("OS_AUTH_URL")
-    password = os.environ.get("OS_PASSWORD")
-    tenant = os.environ.get('OS_TENANT_NAME')
-    username = os.environ.get("OS_USERNAME")
-    if auth_url is None or username is None or password is None or tenant is None:
-       print ("need to set env variables")
-       return
+    kscreds = get_keystone_credentials()
+    keystone = keystoneclient.Client(**kscreds)
+    nvcreds = get_nova_credentials()
+    nova = novaclient.Client(**nvcreds)
 
-    keystone = keystoneclient.Client(auth_url=auth_url, 
-				     password=password, 
-				     tenant_name=tenant, 
-				     username=username)
-    nova = novaclient.Client(api_key=password,
-			     auth_url=auth_url,
-			     project_id=tenant,
-			     username=username)
-	
-    users =  get_users(keystone, nova)
-    #send_email(users)
+    users = get_users(keystone, nova)
+    send_email(users)
 
 if __name__ == '__main__':
    main()
