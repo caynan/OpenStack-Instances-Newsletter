@@ -1,7 +1,5 @@
-import os
-
-from credentials import *
 from emailx import *
+from credentials import *
 from novaclient.v2 import client as novaclient
 from keystoneclient.v2_0 import client as keystoneclient
 
@@ -39,15 +37,17 @@ def get_servers(keystone, nova):
 	if kwargs.has_key(server.user_id):
 	     kwargs[server.user_id].update({server.name: {
 					'id': server.id,
-					'project': projects[server.tenant_id],
+					'project_id': server.tenant_id,
+					'project_name': projects[server.tenant_id],
 					'cpu': flavor.vcpus, 
 					'ram': flavor.ram,	
 					'created': server.created,
 					'status': server.status}})
 	else:
 	     kwargs[server.user_id] = {server.name: {
-				       'id': server.id,  
-				       'project': projects[server.tenant_id],
+				       'id': server.id,
+				       'project_id': server.tenant_id,  
+				       'project_name': projects[server.tenant_id],
 				       'cpu': flavor.vcpus,
 				       'ram': flavor.ram,
 				       'created': server.created,
@@ -56,10 +56,10 @@ def get_servers(keystone, nova):
     return kwargs
 
 def main():
-    kscreds = get_keystone_credentials()
-    keystone = keystoneclient.Client(**kscreds)
-    nvcreds = get_nova_credentials()
-    nova = novaclient.Client(**nvcreds)
+    _creds = get_keystone_credentials()
+    keystone = keystoneclient.Client(**_creds)
+    _creds = get_nova_credentials()
+    nova = novaclient.Client(**_creds)
 
     users = get_users(keystone, nova)
     send_email(users)
