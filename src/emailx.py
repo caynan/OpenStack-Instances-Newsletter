@@ -6,14 +6,14 @@ from email.mime.text import MIMEText
 
 def send_email(users):
     # Email from where the messages will be sent.
-    email = 'diegoado@gmail.com'
+    email = 'your_email@email.com'
     # This gets the password without echoing it on the screen.
     password = getpass.getpass()
 
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_mail_server.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
@@ -25,7 +25,7 @@ def send_email(users):
         servers = users[user]['servers']
         destination = users[user]['email']
 
-	messenger = get_messenger(user ,servers)
+	messenger = get_messenger(user, servers)
         smtp.sendmail(email, [destination], messenger)
 
     smtp.close()
@@ -37,18 +37,18 @@ def get_messenger(user, servers):
  
     instances = ''
     instance_model = open('../email_template/instances_model_inline.html').read()
-    for server in sorted(servers, key=servers.get):
+    for server in sorted(servers, key = servers.get):
 	instance = instance_model
-	instance = instance.format(instance_name=server,
-			           cpu=servers[server]['cpu'],
-			           ram=servers[server]['ram'],
-			           date=servers[server]['created'],
-			           status=servers[server]['status'])
+	instance = instance.format(instance_name = server,
+			           cpu = servers[server]['cpu'],
+			           ram = servers[server]['ram'],
+			           date = servers[server]['created'],
+			           status = servers[server]['status'])
 	
         instances += instance
     
-    base = open('../email_template/base_inline.html').read().format(user_name=user, 
-								    instances=instances)
+    base = open('../email_template/base_inline.html').read().format(user_name = user, 
+								    instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
 
