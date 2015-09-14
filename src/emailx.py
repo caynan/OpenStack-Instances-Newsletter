@@ -1,11 +1,12 @@
 import getpass
 import smtplib
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def send_email(users):
     # Email from where the messages will be sent.
-    email = 'arthurxd11@gmail.com'
+    email = 'diegoado@gmail.com'
     # This gets the password without echoing it on the screen.
     password = getpass.getpass()
 
@@ -24,13 +25,32 @@ def send_email(users):
         servers = users[user]['servers']
         destination = users[user]['email']
 
-	messenger = MIMEMultipart('alternative')
-        messenger['Subject'] = "HTML"
-
-	html = open('../email_template/base.html').read()
-	html = MIMEText(html, 'html')
-	messenger.attach(html)	
-
-        smtp.sendmail(email, [destination], messenger.as_string())
+	messenger = get_messenger(user ,servers)
+        smtp.sendmail(email, [destination], messenger)
 
     smtp.close()
+
+
+def get_messenger(user, servers):
+    messenger = MIMEMultipart('alternative')
+    messenger['Subject'] = 'Instances Newletter'
+ 
+    instances = ''
+    instance_model = open('../email_template/instances_model_inline.html').read()
+    for server in sorted(servers, key=servers.get):
+	instance = instance_model
+	instance = instance.format(instance_name=server,
+			           cpu=servers[server]['cpu'],
+			           ram=servers[server]['ram'],
+			           date=servers[server]['created'],
+			           status=servers[server]['status'])
+	
+        instances += instance
+    
+    base = open('../email_template/base_inline.html').read().format(user_name=user, 
+								    instances=instances)
+    html = MIMEText(base, 'html')
+    messenger.attach(html)
+
+    return messenger.as_string()
+

@@ -31,7 +31,6 @@ def get_servers(keystone, nova):
     kwargs = {}
     projects = get_projects(keystone)
     servers = nova.servers.list(search_opts={'all_tenants': 1})
-    
     for server in servers:
 	flavor = nova.flavors.find(id=server.flavor['id'])
 	if kwargs.has_key(server.user_id):
@@ -39,19 +38,19 @@ def get_servers(keystone, nova):
 					'id': server.id,
 					'project_id': server.tenant_id,
 					'project_name': projects[server.tenant_id],
-					'cpu': flavor.vcpus, 
-					'ram': flavor.ram,	
-					'created': server.created,
+					'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'), 
+					'ram': '%d MB' % flavor.ram,	
+					'created': '%s' % server.created[:10],
 					'status': server.status}})
 	else:
 	     kwargs[server.user_id] = {server.name: {
 				       'id': server.id,
 				       'project_id': server.tenant_id,  
 				       'project_name': projects[server.tenant_id],
-				       'cpu': flavor.vcpus,
-				       'ram': flavor.ram,
-				       'created': server.created,
-				       'status': server.status}}
+                                       'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'),
+                                       'ram': '%d MB' % flavor.ram,
+                                       'created': '%s' % server.created[:10],
+                                       'status': server.status}}
 
     return kwargs
 
