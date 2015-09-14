@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 gulp.task('inline', function(){
   gulp.src('email_template/src/*.html')
   .pipe(inline())
-  .pipe(gulp.dest('email_template'));
+  .pipe(gulp.dest('email_template/build'));
 });
 
 gulp.task('watch', function(){
