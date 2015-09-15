@@ -47,7 +47,7 @@ def get_messenger(user, servers):
 
         instances += instance
 
-    base = open('../email_template/build/base.html').read().format(user_name = user,
+    base = open('../email_template/build/base_model.html').read().format(user_name = user,
 								    instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
