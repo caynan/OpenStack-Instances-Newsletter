@@ -8,15 +8,20 @@ their Instances from their email.
 
 ## Installation
 1. clone the repo
+
   ```
   $ git clone https://github.com/caynan/OpenStack-Instances-Newsletter.git
   ```  
+
 2. getting into ```src``` and change the environment variables inside
 ```openrc.sh``` to the ones that match your cloud, save and run the script.
+
   ```
   $ ./openrc.sh
   ```
+
 3. run the app!!
+
   ```
   $ python main.py
   ```
