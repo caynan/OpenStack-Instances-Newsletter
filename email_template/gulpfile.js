@@ -21,7 +21,8 @@ gulp.task('image', function(){
 // Watch Task
 // Keep gulp running and watching for changes
 gulp.task('watch', function(){
-  gulp.watch('src/*.html', ['inline', 'image']);
+  gulp.watch('src/**', ['inline']);
+  gulp.watch('img/**', ['image']);
 });
 
 // Default Task
