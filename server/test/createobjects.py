@@ -1,11 +1,13 @@
 # coding: utf-8
 
-from credentials import *
 import keystoneclient.v2_0.client as ksclient
 import novaclient.client as nvclient
 import re
+import sys
+sys.path.append('../script')
+import credentials as cred
 
-kscreds = get_keystone_credentials()
+kscreds = cred.get_keystone_credentials()
 keystone = ksclient.Client(**kscreds)
 
 def create_project(project_name, project_description = ""):
@@ -32,6 +34,10 @@ def delete_project(project_name):
 def create_user(user_name, user_password, user_email, user_project = "demo"):	
 	if user_name == None or len(user_name) == 0:
                 print "Error, user name cannot be blank."
+		return
+
+	if user_password == None or len(user_password) == 0:
+		print "Error, password cannot be blank."
 		return
 
 	if user_email == None or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", user_email):
@@ -76,7 +82,10 @@ def add_admin_role(user_name, project_name = "demo"):
                 return
 	
 	admin_role = keystone.roles.find(name = "admin")
-	keystone.roles.add_user_role(user, admin_role, project_id)
+	try:
+		keystone.roles.add_user_role(user, admin_role, project_id)
+	except:
+		print "User '%s' already have admin role." % user_name
 
 def remove_admin_role(user_name, project_name = "demo"):
 	try:
@@ -96,7 +105,7 @@ def remove_admin_role(user_name, project_name = "demo"):
         try:
 		keystone.roles.remove_user_role(user, admin_role, project_id)
 	except:
-		print "User '%s' does not have admin role." %user_name		
+		print "User '%s' does not have admin role." % user_name		
 	
 def create_instance(user_name, user_password, user_project, instance_name, flavor_name):
 	try:
@@ -111,8 +120,12 @@ def create_instance(user_name, user_password, user_project, instance_name, flavo
                 print "Project '%s' does not exist." % user_project
                 return
 
-	temp_nova = nvclient.Client("2", auth_url = url, username = user_name,
-                           	    api_key = user_password, project_id = user_project)
+	try:
+		temp_nova = nvclient.Client("2", auth_url = cred.url, username = user_name,
+                           	            api_key = user_password, project_id = user_project)
+	except:
+		print "Invalid user/password."
+		return	
 	
 	image = temp_nova.images.list()[0]
 	
@@ -137,8 +150,12 @@ def remove_instance(user_name, user_password, user_project, instance_id):
                 print "Project '%s' does not exist." % user_project
                 return
 
-        temp_nova = nvclient.Client("2", auth_url = url, username = user_name,
-                                    api_key = user_password, project_id = user_project)
+        try:
+		temp_nova = nvclient.Client("2", auth_url = cred.url, username = user_name,
+                                            api_key = user_password, project_id = user_project)
+	except:
+		print "Invalid user/password."
+		return
 	
 	try:
 		temp_nova.servers.delete(instance_id)
