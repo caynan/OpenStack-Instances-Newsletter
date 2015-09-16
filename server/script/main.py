@@ -14,8 +14,8 @@ nova = novaclient.Client(**kwargs)
 def get_users():
     kwargs = {}
     users = keystone.users.list()
-    servers = get_servers()    
-	
+    servers = get_servers()
+
     for user in users:
 	try:
 	    if re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", user.email):
@@ -36,8 +36,8 @@ def get_servers():
 	if kwargs.has_key(server.user_id):
 	     kwargs[server.user_id].update({server.name: {
 					'id': server.id,
-					'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'), 
-					'ram': '%d MB' % flavor.ram,	
+					'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'),
+					'ram': '%d MB' % flavor.ram,
 					'created': '%s' % server.created[:10],
 					'status': server.status}})
 	else:

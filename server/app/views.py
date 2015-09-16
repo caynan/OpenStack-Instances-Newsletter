@@ -1,6 +1,7 @@
 from app import app
-from script import main
+from script import main as terminator
 
-@app.route("/instances/delete/<key>")
-def instance_delete(key):
-    return "Deleted: " + key
+@app.route("/instances/delete/<id>")
+def instance_delete(id):
+    terminator.delete_server(id)
+    return "Deleted Instance with id: " + id + type(id)
