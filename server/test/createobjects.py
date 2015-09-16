@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import keystoneclient.v2_0.client as ksclient
 import novaclient.client as nvclient
 import re
