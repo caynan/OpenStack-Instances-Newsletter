@@ -35,21 +35,28 @@ def get_messenger(user, servers):
     messenger = MIMEMultipart('alternative')
     messenger['Subject'] = 'Instances Newletter'
 
+
     instances = ''
-    instance_model = open('../email_template/models/instances.html').read()
+    instance_model = open('../../email_template/models/instances.html').read()
     for server in sorted(servers, key = servers.get):
-	instance = instance_model
-	instance = instance.format(instance_name = server,
-			           cpu = servers[server]['cpu'],
-			           ram = servers[server]['ram'],
-			           date = servers[server]['created'],
-			           status = servers[server]['status'])
+        del_url = get_url(servers[server]['id'])
+    	instance = instance_model
+    	instance = instance.format(instance_name = server,
+    			           cpu = servers[server]['cpu'],
+    			           ram = servers[server]['ram'],
+    			           date = servers[server]['created'],
+    			           status = servers[server]['status'],
+                           url = del_url)
 
         instances += instance
 
-    base = open('../email_template/models/base.html').read().format(user_name = user,
+    base = open('../../email_template/models/base.html').read().format(user_name = user,
 								    instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
 
     return messenger.as_string()
+
+def get_url(id):
+    return "10.4.4.41/instances/delete/{id}".format(id = id)
+    
