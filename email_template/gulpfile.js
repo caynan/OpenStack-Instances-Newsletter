@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 gulp.task('inline', function(){
   gulp.src('src/*.html')
   .pipe(inline())
-  .pipe(gulp.dest('build'));
+  .pipe(gulp.dest('models'));
 });
 
 // Image Task

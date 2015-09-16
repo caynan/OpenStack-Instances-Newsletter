@@ -1,4 +1,8 @@
+import instance_terminator
 from flask import Flask
+
+
+
 app = Flask(__name__)
 
 @app.route("/instances/delete/<key>")
