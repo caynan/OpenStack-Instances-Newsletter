@@ -9,6 +9,12 @@ kscreds = cred.get_keystone_credentials()
 keystone = ksclient.Client(**kscreds)
 
 def create_project(project_name, project_description = ""):
+	""" Create a project.
+
+	Keyword arguments:
+	project_name -- name to the new project
+	project_description -- description to the new project (default 'blank') 
+	"""
 	if project_name == None or len(project_name) == 0:
                 print "Error, project name cannot be blank."
 	
@@ -19,6 +25,11 @@ def create_project(project_name, project_description = ""):
 		print "Project '%s' cannot be created, check if already exist another project with this name." % project_name
 
 def delete_project(project_name):
+	""" Delete an existing project.
+	
+	Keyword arguments:
+	project_name -- name of the project to be deleted
+	"""
 	try:
                 project = keystone.tenants.find(name = project_name)
                 project_id = project.id
@@ -29,7 +40,15 @@ def delete_project(project_name):
         keystone.tenants.delete(project_id)
 
 
-def create_user(user_name, user_password, user_email, user_project = "demo"):	
+def create_user(user_name, user_password, user_email, user_project = "demo"):
+	""" Create an user.
+
+	Keyword arguments:
+	user_name -- name to the new user
+	user_password -- password to the new user
+	user_email -- email to the new user
+	user_project -- project where user will be included (default "demo")
+	"""	
 	if user_name == None or len(user_name) == 0:
                 print "Error, user name cannot be blank."
 		return
@@ -56,6 +75,11 @@ def create_user(user_name, user_password, user_email, user_project = "demo"):
 		print "User '%s' cannot be created, check if already exist another user with this name." % user_name
 
 def delete_user(user_name):
+	""" Delete an existing user.
+
+	Keyword arguments:
+	user_name -- name of the user to be deleted
+	"""
 	try:
 		user = keystone.users.find(name = user_name)
 		user_id = user.id
@@ -66,6 +90,12 @@ def delete_user(user_name):
 	keystone.users.delete(user_id)
 
 def add_admin_role(user_name, project_name = "demo"):
+	""" Assign admin role to an user.
+	
+	Keyword arguments:
+	user_name -- user to receive admin role
+	project_name -- user's project (default "demo") 
+	"""
 	try:
                 user = keystone.users.find(name = user_name)
         except:
@@ -86,6 +116,12 @@ def add_admin_role(user_name, project_name = "demo"):
 		print "User '%s' already have admin role." % user_name
 
 def remove_admin_role(user_name, project_name = "demo"):
+	""" Remove admin role from an user.
+
+	Keyword arguments:
+        user_name -- user from where admin role will be removed
+        project_name -- user's project (default "demo")
+	"""
 	try:
                 user = keystone.users.find(name = user_name)
         except:
@@ -106,6 +142,15 @@ def remove_admin_role(user_name, project_name = "demo"):
 		print "User '%s' does not have admin role." % user_name		
 	
 def create_instance(user_name, user_password, user_project, instance_name, flavor_name):
+	""" Create an instance.
+	
+	Keyword arguments:
+	user_name -- name of the user who will own the new instance.
+	user_password -- password of the user who will own the new instance.
+	user_project -- project of the user who will own the new instance.
+	instance_name -- name to the new instance.
+	flavor_name -- flavor to the new instance.  
+	"""
 	try:
                 user = keystone.users.find(name = user_name)
         except:
@@ -135,7 +180,15 @@ def create_instance(user_name, user_password, user_project, instance_name, flavo
 
 	temp_nova.servers.create(name = instance_name, image = image, flavor = flavor)
 
-def remove_instance(user_name, user_password, user_project, instance_id):
+def delete_instance(user_name, user_password, user_project, instance_id):
+	""" Delete an existing instance.
+        
+        Keyword arguments:
+        user_name -- name of the owner of the instance to be deleted.
+        user_password -- password of the owner of the instance to be deleted.
+        user_project -- project of the owner of the instance to be deleted.
+        instance_id -- id of the instance to be deleted.
+        """
 	try:
                 user = keystone.users.find(name = user_name)
         except:
