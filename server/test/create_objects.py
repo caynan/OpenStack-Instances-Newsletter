@@ -3,9 +3,9 @@ import novaclient.client as nvclient
 import re
 import sys
 sys.path.append('../script')
-import credentials as cred
+from credentials import *
 
-kscreds = cred.get_keystone_credentials()
+kscreds = get_keystone_credentials()
 keystone = ksclient.Client(**kscreds)
 
 def create_project(project_name, project_description = ""):
@@ -164,7 +164,7 @@ def create_instance(user_name, user_password, user_project, instance_name, flavo
                 return
 
 	try:
-		temp_nova = nvclient.Client("2", auth_url = cred.url, username = user_name,
+		temp_nova = nvclient.Client("2", auth_url = kscreds['auth_url'], username = user_name,
                            	            api_key = user_password, project_id = user_project)
 	except:
 		print "Invalid user/password."
@@ -202,7 +202,7 @@ def delete_instance(user_name, user_password, user_project, instance_id):
                 return
 
         try:
-		temp_nova = nvclient.Client("2", auth_url = cred.url, username = user_name,
+		temp_nova = nvclient.Client("2", auth_url = kscreds['auth_url'], username = user_name,
                                             api_key = user_password, project_id = user_project)
 	except:
 		print "Invalid user/password."
