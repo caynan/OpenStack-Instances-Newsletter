@@ -6,14 +6,14 @@ from email.mime.text import MIMEText
 
 def send_email(users):
     # Email from where the messages will be sent.
-    email = 'arthurxd11@gmail.com'
+    email = 'your_email@email.com'
     # This gets the password without echoing it on the screen.
     password = getpass.getpass()
 
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_server_mail.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
@@ -37,7 +37,7 @@ def get_messenger(user, servers):
 
 
     instances = ''
-    instance_model = open('../../email_template/models/instances.html').read()
+    instance_model = open('../../templates/models/instances.html').read()
     for server in sorted(servers, key = servers.get):
         del_url = get_url(servers[server]['id'])
     	instance = instance_model
@@ -50,7 +50,7 @@ def get_messenger(user, servers):
 
         instances += instance
 
-    base = open('../../email_template/models/base.html').read().format(user_name = user,
+    base = open('../../templates/models/base.html').read().format(user_name = user,
 								    instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
