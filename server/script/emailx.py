@@ -13,7 +13,7 @@ def send_email(users):
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.your_server_mail.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_server_email.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
@@ -35,28 +35,26 @@ def get_messenger(user, servers):
     messenger = MIMEMultipart('alternative')
     messenger['Subject'] = 'Instances Newletter'
 
-
     instances = ''
     instance_model = open('../../email_template/models/instances.html').read()
     for server in sorted(servers, key = servers.get):
-        del_url = get_url(servers[server]['id'])
     	instance = instance_model
     	instance = instance.format(instance_name = server,
     			           cpu = servers[server]['cpu'],
     			           ram = servers[server]['ram'],
     			           date = servers[server]['created'],
     			           status = servers[server]['status'],
-                           url = del_url)
+                                   url = get_url(servers[server]['id']))
 
         instances += instance
 
     base = open('../../email_template/models/base.html').read().format(user_name = user,
-								    instances = instances)
+								       instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
 
     return messenger.as_string()
 
 def get_url(id):
-    return "10.4.4.41/instances/delete/{id}".format(id = id)
+    return "http://10.4.4.41:9898/instances/delete/{id}".format(id = id)
     
