@@ -13,14 +13,17 @@ their Instances from their email.
   $ git clone https://github.com/caynan/OpenStack-Instances-Newsletter.git
   ```  
 
-2. getting into ```src``` and change the environment variables inside
+2. getting into ```server``` and change the environment variables inside
 ```openrc.sh``` to the ones that match your cloud, save and run the script.
 
   ```
   $ ./openrc.sh
   ```
 
-3. run the app!!
+3. getting into ```script``` and change ```emailx.py``` according to your email,
+comments inside the file will guide you.
+
+4. run the app!!
 
   ```
   $ python main.py
