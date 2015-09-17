@@ -1,5 +1,4 @@
 import re
-
 from emailx import *
 from credentials import *
 from novaclient.v2 import client as novaclient
