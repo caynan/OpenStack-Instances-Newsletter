@@ -1,4 +1,6 @@
 import re
+import hashlib
+
 from emailx import *
 from credentials import *
 from novaclient.v2 import client as novaclient
@@ -35,6 +37,7 @@ def get_servers():
 	if kwargs.has_key(server.user_id):
 	     kwargs[server.user_id].update({server.name: {
 					'id': server.id,
+                                        'hash': set_server_hash(server.id, server.user_id),
 					'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'),
 					'ram': '%d MB' % flavor.ram,
 					'created': '%s' % server.created[:10],
@@ -42,12 +45,28 @@ def get_servers():
 	else:
 	     kwargs[server.user_id] = {server.name: {
 				       'id': server.id,
+                                       'hash': set_server_hash(server.id, server.user_id),
                                        'cpu': '%d %s' % (flavor.vcpus, 'vCPUs' if flavor.vcpus > 1 else 'vCPU'),
                                        'ram': '%d MB' % flavor.ram,
                                        'created': '%s' % server.created[:10],
                                        'status': server.status}}
-
+    
     return kwargs
+
+
+def get_server_id_by_hash(server_hash):
+    servers = nova.servers.list(search_opts={'all_tenants': 1})
+    
+    for server in servers:
+       if set_server_hash(server.id, server.user_id) == server_hash:
+	  return server.id
+    
+    raise ValueError('Instance not Found by hash input')
+
+
+def set_server_hash(server_id, salf):    
+    server_hash = hashlib.sha384(server_id + salf)
+    return server_hash.hexdigest()
 
 
 def delete_server(server_id):
