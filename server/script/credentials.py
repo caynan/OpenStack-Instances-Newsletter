@@ -35,15 +35,15 @@ def set_environments():
     global url
 
     if password is None or project is None or username is None or url is None:
-        source1 = 'source openrc.sh'
-        source2 = 'source ../openrc.sh'
         dump = '/usr/bin/python -c "import os, json; print json.dumps(dict(os.environ))"'
         try:
-       	    popen = subprocess.Popen(['/bin/bash', '-c', '%s && %s' % (source1, dump)], stdout=subprocess.PIPE)
-            env = json.loads(popen.stdout.read())
-	except:
-            popen = subprocess.Popen(['/bin/bash', '-c', '%s && %s' % (source2, dump)], stdout=subprocess.PIPE)
-            env = json.loads(popen.stdout.read())
+	    open('../openrc.sh')
+            source = 'source ../openrc.sh'
+        except:
+            source = 'source openrc.sh'
+       
+        popen = subprocess.Popen(['/bin/bash', '-c', '%s && %s' % (source, dump)], stdout=subprocess.PIPE) 
+        env = json.loads(popen.stdout.read())
         os.environ = env	
 
     password = os.environ.get('OS_PASSWORD')

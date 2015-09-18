@@ -64,6 +64,6 @@ def get_messenger(user, servers):
 
     return messenger.as_string()
 
-def get_url(id):
-    return "http://10.4.4.41:9898/instances/delete/{id}".format(id = id)
+def get_url(server_hash):
+    return "http://10.4.2.207:9898/instances/delete/{id}".format(id = server_hash)
     
