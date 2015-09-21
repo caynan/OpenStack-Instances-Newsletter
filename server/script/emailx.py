@@ -11,14 +11,14 @@ def send_email(users):
     """ Send email to cloud users informing about their instances. """
 
     # Email from where the messages will be sent.
-    email = 'your_email@gmail.com'
+    email = 'your_email@email.com'
     # This gets the password without echoing it on the screen.
     password = getpass.getpass()
 
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.yout_server_mail.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_server_mail.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
