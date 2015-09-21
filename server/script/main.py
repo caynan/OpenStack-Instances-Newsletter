@@ -69,7 +69,8 @@ def set_server_hash(server_id, salf):
     return server_hash.hexdigest()
 
 
-def delete_server(server_id):
+def delete_server(server_hash):
+    server_id = get_server_id_by_hash(server_hash)
     nova.servers.delete(server_id)
 
 

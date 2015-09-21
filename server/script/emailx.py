@@ -53,7 +53,7 @@ def get_messenger(user, servers):
     			           ram = servers[server]['ram'],
     			           date = servers[server]['created'],
     			           status = servers[server]['status'],
-                                   url = get_url(servers[server]['id']))
+                                   url = get_url(servers[server]['hash']))
 
         instances += instance
 
