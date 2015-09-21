@@ -21,10 +21,11 @@ def get_users():
 	try:
 	    if re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", user.email):
 	       kwargs[user.username] = {'id': user.id, 'email': user.email}
-	    if servers.has_key(user.id):
-	       kwargs[user.username].update({'servers': servers[user.id]})
-	except AttributeError:
-	    continue
+        except AttributeError:
+            kwargs[user.username] = {'id': user.id, 'email': ADMIN_EMAIL}
+        
+        if servers.has_key(user.id):
+	   kwargs[user.username].update({'servers': servers[user.id]})
 
     return kwargs
 

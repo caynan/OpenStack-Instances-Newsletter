@@ -1,20 +1,24 @@
+import os
 import getpass
 import smtplib
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
+ADMIN_EMAIL = 'admin_email@email.com'
 
 def send_email(users):
     """ Send email to cloud users informing about their instances. """
 
     # Email from where the messages will be sent.
-    email = 'your_email@email.com'
+    email = 'your_email@gmail.com'
     # This gets the password without echoing it on the screen.
     password = getpass.getpass()
 
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.your_server_mail.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.yout_server_mail.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
@@ -40,6 +44,7 @@ def get_messenger(user, servers):
     user -- user who will receive the email
     servers -- list of instances owned by the user
     """
+    os.chdir(os.path.dirname(__file__))
 
     messenger = MIMEMultipart('alternative')
     messenger['Subject'] = 'Instances Newletter'
@@ -66,4 +71,4 @@ def get_messenger(user, servers):
 
 def get_url(server_hash):
     return "http://10.4.2.207:9898/instances/delete/{id}".format(id = server_hash)
-    
+
