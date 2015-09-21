@@ -7,10 +7,10 @@ def instance_delete(id):
 	delete_server(server_hash=id)
 	return "<h1>Instance deleted successfully</h1>"
     except ValueError:
-    	return "<h1>Instance deleted successfully</h1>"
+    	raise NotImplementedError
 
 
-@app.route("/instances/confirm/<id>")
-def confirm_action(hash):
-    pass
+@app.route("/user/confirm/<id>")
+def confirm_action(id):
+    raise NotImplementedError
 

@@ -50,7 +50,7 @@ def get_messenger(user, servers):
     messenger['Subject'] = 'Instances Newletter'
 
     instances = ''
-    instance_model = open('../../email_template/models/instances.html').read()
+    instance_model = open('../../templates/models/instances.html').read()
     for server in sorted(servers, key = servers.get):
     	instance = instance_model
     	instance = instance.format(instance_name = server,
@@ -62,7 +62,7 @@ def get_messenger(user, servers):
 
         instances += instance
 
-    base = open('../../email_template/models/base.html').read().format(user_name = user,
+    base = open('../../templates/models/base.html').read().format(user_name = user,
 								       instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
