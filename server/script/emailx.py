@@ -63,12 +63,12 @@ def get_messenger(user, servers):
         instances += instance
 
     base = open('../../templates/models/base.html').read().format(user_name = user,
-								       instances = instances)
+								  instances = instances)
     html = MIMEText(base, 'html')
     messenger.attach(html)
 
     return messenger.as_string()
 
 def get_url(server_hash):
-    return "http://10.4.2.207:9898/instances/delete/{id}".format(id = server_hash)
+    return "http://10.4.2.207:9898/user/confirm/{id}".format(id = server_hash)
 
