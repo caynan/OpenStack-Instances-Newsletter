@@ -18,7 +18,7 @@ def send_email(users):
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.your_server_email.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_mail_server.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 

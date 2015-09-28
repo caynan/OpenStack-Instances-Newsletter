@@ -219,4 +219,3 @@ def delete_instance(user_name, user_password, user_project, instance_id):
 	temp_nova.servers.delete(instance_id)
     except:
 	print "Instance id '%s' does not exist." % instance_id
-
