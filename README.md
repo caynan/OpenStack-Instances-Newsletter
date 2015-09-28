@@ -7,26 +7,26 @@ account instances, informing that of inactivity and are giving the option to del
 their Instances from their email.
 
 ## Installation
-1. clone the repo
+1. clone the repo.
 
   ```
   $ git clone https://github.com/caynan/OpenStack-Instances-Newsletter.git
   ```  
 
-2. getting into ```server``` and change the environment variables inside
-```openrc.sh``` to the ones that match your cloud, save and run the script.
-
-  ```
-  $ ./openrc.sh
-  ```
-
-3. getting into ```script``` and change ```emailx.py``` according to your email,
+2. getting into ```script``` and change ```emailx.py``` according to your email,
 comments inside the file will guide you.
 
-4. run the app!!
+3. run the app to send emails.
 
   ```
   $ python main.py
+  ```
+
+4. in order to delete instances, server needs to be running. Get into ```server``` and
+run the server.
+
+  ```
+  $ python run.py
   ```
 
 ## Troubleshooting

@@ -8,6 +8,7 @@ from credentials import *
 kscreds = get_keystone_credentials()
 keystone = ksclient.Client(**kscreds)
 
+
 def create_project(project_name, project_description = ""):
     """ Create a project.
 
@@ -75,6 +76,7 @@ def create_user(user_name, user_password, user_email, user_project = "demo"):
     except:
 	print "User '%s' cannot be created, check if already exist another user with this name." % user_name
 
+
 def delete_user(user_name):
     """ Delete an existing user.
 
@@ -89,6 +91,7 @@ def delete_user(user_name):
 	return
 	
     keystone.users.delete(user_id)
+
 
 def add_admin_role(user_name, project_name = "demo"):
     """ Assign admin role to an user.
@@ -116,6 +119,7 @@ def add_admin_role(user_name, project_name = "demo"):
     except:
 	print "User '%s' already have admin role." % user_name
 
+
 def remove_admin_role(user_name, project_name = "demo"):
     """ Remove admin role from an user.
 
@@ -141,6 +145,7 @@ def remove_admin_role(user_name, project_name = "demo"):
 	keystone.roles.remove_user_role(user, admin_role, project_id)
     except:
 	print "User '%s' does not have admin role." % user_name		
+
 	
 def create_instance(user_name, user_password, user_project, instance_name, flavor_name):
     """ Create an instance.
@@ -181,6 +186,7 @@ def create_instance(user_name, user_password, user_project, instance_name, flavo
 
     temp_nova.servers.create(name = instance_name, image = image, flavor = flavor)
 
+
 def delete_instance(user_name, user_password, user_project, instance_id):
     """ Delete an existing instance.
         
@@ -213,3 +219,4 @@ def delete_instance(user_name, user_password, user_project, instance_id):
 	temp_nova.servers.delete(instance_id)
     except:
 	print "Instance id '%s' does not exist." % instance_id
+
