@@ -3,7 +3,7 @@ import hashlib
 
 from emailx import *
 from credentials import *
-from novaclient.v2 import client as novaclient
+from novaclient import client as novaclient
 from keystoneclient.v2_0 import client as keystoneclient
 
 kwargs = get_keystone_credentials()

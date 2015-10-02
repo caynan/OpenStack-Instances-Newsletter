@@ -18,7 +18,7 @@ def send_email(users):
     # You need to change here, depending on the email that you use.
     # For example, Gmail and Yahoo have different smtp, 'stmp.gmail.com' and 'smtp.mail.yahoo.com', respectively.
     # You need to know what it is.
-    smtp = smtplib.SMTP_SSL('smtp.your_mail_server.com', 465)
+    smtp = smtplib.SMTP_SSL('smtp.your_smtp_server.com', 465)
     smtp.ehlo()
     smtp.login(email, password)
 
@@ -70,5 +70,5 @@ def get_messenger(user, servers):
     return messenger.as_string()
 
 def get_url(server_hash):
-    return "http://10.4.2.207:9898/user/confirm/{id}".format(id = server_hash)
+    return "http://haproxy_ip:80/user/confirm/{id}".format(id = server_hash)
 

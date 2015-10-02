@@ -1,4 +1,5 @@
 #!venv/bin/python
-from app import app
+from app.server import APP
 
-app.run(debug=True, host='0.0.0.0', port=9898)
+APP.run(debug=True, host='0.0.0.0', port=9898)
+

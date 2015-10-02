@@ -1,8 +1,8 @@
 import os
-from app import app
+from server import APP
 from script.main import *
 
-@app.route("/instances/delete/<id>")
+@APP.route("/instances/delete/<id>")
 def instance_delete(id):
     try:
 	delete_server(server_hash=id)
@@ -12,9 +12,11 @@ def instance_delete(id):
 		<p>More information contact the Cloud admin</p></center>'
 
 
-@app.route("/user/confirm/<id>")
+@APP.route("/user/confirm/<id>")
 def confirm_action(id):
     os.chdir(os.path.dirname(__file__))
-    confirm = open('../../templates/src/confirm.html').read().format(id=id)
+    url = 'http://haproxy_ip:80/instances/delete/' + id
+
+    confirm = open('../../templates/src/confirm.html').read().format(url=url)
     return confirm
 

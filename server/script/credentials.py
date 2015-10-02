@@ -9,7 +9,8 @@ username = os.environ.get('OS_USERNAME')
 
 def get_nova_credentials():
     set_environments()
-    args = {}	
+    args = {}
+    args['version'] = 2	
     args['username'] = username 
     args['api_key'] = password
     args['auth_url'] = url
@@ -35,12 +36,9 @@ def set_environments():
     global url
 
     if password is None or project is None or username is None or url is None:
-	try:
-            open('../openrc.sh')
-	    source = 'source ../openrc.sh'
-        except:
-            source = 'source openrc.sh'
-
+	os.chdir(os.path.dirname(__file__))
+	
+	source = 'source ../openrc.sh'
         dump = '/usr/bin/python -c "import os, json; print json.dumps(dict(os.environ))"'
 	popen = subprocess.Popen(['/bin/bash', '-c', '%s && %s' % (source, dump)], stdout=subprocess.PIPE) 
         env = json.loads(popen.stdout.read())
