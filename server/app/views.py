@@ -1,6 +1,6 @@
 import os
 from server import APP
-from script.main import *
+from script.main import delete_server
 
 @APP.route("/instances/delete/<id>")
 def instance_delete(id):
