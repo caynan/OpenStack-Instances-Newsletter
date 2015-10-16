@@ -1,6 +1,5 @@
 import os
 from server import APP
-from flask.ext.api import status
 from script.main import delete_server
 
 @APP.route("/instances/delete/<id>")
@@ -23,4 +22,4 @@ def confirm_action(id):
 
 @APP.route("/")
 def monitor():
-    return status.HTTP_200_OK
+    return "OK"
